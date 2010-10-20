@@ -103,12 +103,13 @@ end
 %%
 psf=squeeze(mean(corrected,[],4))
 otf=ft(psf)
-mean(std(corrected,[],4))
+mean(std(corrected,[],4)) % FIXME maybe individual scaling is necessary
 otf2d=mean(otf,[],3)
 %otf_alternate=mean(dip_fouriertransform(psfs,'forward',[1 1 1 0]),[],4)
 %%
-for k=[-25,-20,-15,0,15,20]
-    writeim(psf(:,:,29+k),sprintf('/home/martin/1007/avgpsf/psf%+03d',k),'ICSv2');
+for k=[-25,-20,-15,0,15,20,25]
+    writeim(squeeze(psf(:,:,29+k)),...
+        sprintf('/home/martin/1007/avgpsf/psf%+03d',k),'ICSv2');
 end
 %% rotational integration
 nr=100;
