@@ -101,12 +101,15 @@ end
 %    -0.6683   -0.1677    0.0070
 %    -0.2246   -0.6782    0.1989
 %%
-psf=mean(corrected,[],4)
+psf=squeeze(mean(corrected,[],4))
 otf=ft(psf)
 mean(std(corrected,[],4))
 otf2d=mean(otf,[],3)
 %otf_alternate=mean(dip_fouriertransform(psfs,'forward',[1 1 1 0]),[],4)
-
+%%
+for k=[-25,-20,-15,0,15,20]
+    writeim(psf(:,:,29+k),sprintf('/home/martin/1007/avgpsf/psf%+03d',k),'ICSv2');
+end
 %% rotational integration
 nr=100;
 otf1d=newim(nr);
