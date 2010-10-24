@@ -7,13 +7,10 @@
 % theta=0,,alpha
 % example: vars; memi(0.alpha,rr(s)<20,rr(s)<20)
 
-function u5 = memi(phi,theta,tm,tl)
+function u5 = memi(kx,ky,tm,tl)
   vars;
-  k0=1/lambda;
   rx=xx(s)*D;
   ry=yy(s)*D;
-  kx=k0*cos(phi)*sin(theta);
-  ky=k0*sin(phi)*sin(theta);
   u0=exp(2*pi*1i.*(rx.*kx+ry.*ky)); % illumination
   % tm=rr(s)<20; % mma transmission
   u2=ft(u0.*tm); % lcos illumination
