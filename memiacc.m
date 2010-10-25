@@ -1,4 +1,4 @@
-%%
+%% incoherent addition of images in focal plane
 tic
 s=[128 128]
 acc=newim([s 600])*1.0;
