@@ -110,3 +110,10 @@ for a=0:ill_s(1)-1
 end
 %%
 writeim(255*normalize(inco_accum),'05incoherent','JPEG');
+
+
+%% compare input image with result
+% turn input image upside down and increase size
+diff=incimate(abs(ft(ft(tm))),5)-inco_accum/max(inco_accum);
+
+writeim(255*normalize(diff),'06diff','JPEG');
