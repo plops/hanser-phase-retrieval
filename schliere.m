@@ -9,7 +9,7 @@ pad=4; % 4 micromirrors padding
 
 % tm=(rr(s)<4.5); %.*mod(yy(s),2) % hard edged circle
 tm=exp(-((xx(s)-14).^2+yy(s).^2)/30); % soft gaussian
-
+% tm=newim(s); % blank
 dir=2*(mod(yy(s),2)-.5); % mirror rows tilt in different directions
 bigtilt=incimate((1-tm).*dir,zoom);
 
@@ -24,7 +24,8 @@ maxtilt=(mod(xx(bigtilt,'corner'),zoom)-shif)/(floor(zoom/2)*4);
 mma_phase=newim(maxtilt).*1i;
 p=zoom*(pad-1);
 q=zoom*(s(2)+1-pad)-1;
-mma_phase(p:q,p:q)=exp(1i*2*pi*...
+% for the simulation the pathdifference should be 2pi for blazing
+mma_phase(p:q,p:q)=exp(1i*4*pi*...
     bigtilt(p:q,p:q).*maxtilt(p:q,p:q));
 
 writeim(255*normalize(phase(mma_phase)),'00mma_phase.jpg','JPEG');
