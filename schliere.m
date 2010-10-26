@@ -41,6 +41,7 @@ vol_i3=newim([size(maxtilt) ill_s],'double');
 vol_i2=newim([size(maxtilt) ill_s],'double');
 %% do fourier filtering for each illumination angle
 schlieren_mask=rr(maxtilt)<max(size(maxtilt))/(4*zoom);
+%%
 for a=0:ill_s(1)-1
     for b=0:ill_s(2)-1
         kx=double(ill_kx(a,b));
@@ -60,18 +61,18 @@ end
 schlieren_ring=(rr(maxtilt)>max(size(maxtilt))/(4*zoom))&...
     (rr(maxtilt)<max(size(maxtilt))*1.1/(4*zoom));
 wide=horzcat(...
-    1e7*normalize(squeeze(vol_i2(:,:,2,3))),...
-    1e7*normalize(squeeze(vol_i2(:,:,6,6))),...
-    1e7*normalize(squeeze(vol_i2(:,:,12,12))));
-filt_im=overlay(wide,repmat(schlieren_ring,[3 1]));
+    squeeze(vol_i2(:,:,2,3)),...
+    squeeze(vol_i2(:,:,6,6)),...
+    squeeze(vol_i2(:,:,12,12)));
+filt_im=overlay(1e7*normalize(wide),repmat(schlieren_ring,[3 1]));
 writeim(filt_im,'01filt_im.jpg','JPEG');
 
 %% display the corresponding intensity images of the mma
 wide=horzcat(...
-    normalize(squeeze(vol_i3(:,:,2,3))),...
-    normalize(squeeze(vol_i3(:,:,6,6))),...
-    normalize(squeeze(vol_i3(:,:,12,12))));
-writeim(255*wide,'02mma_im.jpg','JPEG');
+    squeeze(vol_i3(:,:,2,3)),...
+    squeeze(vol_i3(:,:,6,6)),...
+    squeeze(vol_i3(:,:,12,12)));
+writeim(255*normalize(wide),'02mma_im.jpg','JPEG');
 
 %% create a mosaic of all the images central image is illuminated
 %% perpendicular
@@ -117,3 +118,12 @@ writeim(255*normalize(inco_accum),'05incoherent','JPEG');
 diff=incimate(abs(ft(ft(tm))),5)-inco_accum/max(inco_accum);
 
 writeim(255*normalize(diff),'06diff','JPEG');
+
+%% cross section
+[pos,val]=dip_maximumpixel(inco_accum,[],0);
+inco_accum(:,pos(2))
+
+%% contrast
+M=double(max(inco_accum));
+m=double(inco_accum(158,158));
+[M/m (M-m)/(M+m)]
