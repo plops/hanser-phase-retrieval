@@ -44,10 +44,20 @@ for a=0:ill_s(1)-1
 end
 
 %%
-
-mosaic_i3=reshape(permute(reshape(vol_i3,[320 320*13 13]),[2 1 3]),[320*13 320*13]);
+[w h a b]=size(vol_i3);
+mosaic_i3=reshape(permute(reshape(vol_i3,[w h*b a]),[2 1 3]),[w*a h*b]);
 mosaic_i3_small=resample(mosaic_i3,[1/zoom 1/zoom]);
-
+mosaic_i2=reshape(permute(reshape(vol_i2,[w h*b a]),[2 1 3]),[w*a h*b]);
+mosaic_i2_small=resample(mosaic_i2,[1/zoom 1/zoom]);
+%% show (log of) intensity in the fourier plane with aperture
+w=50; h=50;
+ill_aps=reshape(permute( ...
+    reshape(repmat(extract(schlieren_mask,[w h]),...
+    [1 1 a b]),[w h*b a]),[2 1 3]),[w*a h*b]);
+mosaic_i2_cut=reshape(permute(reshape(extract(vol_i2,...
+    [w h]),[w h*b a]),[2 1 3]),[w*a h*b]);
+lmi2cut=log(mosaic_i2_cut);
+overlay((lmi2cut-min(lmi2cut))*255/(max(lmi2cut)-min(lmi2cut)),~ill_aps)
 %%
 ill_aperture=(rr(mosaic_i3_small,'freq')>.8/2) & ...
     (rr(mosaic_i3_small,'freq')<.84/2);
